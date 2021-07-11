@@ -10,7 +10,13 @@ for et in $(ls . | sort); do
             chmod +x $exe;
             /bin/bash "$(pwd)/$exe"
         fi
-    elif [ $et == "dot" ]; then
+        if [[ "vim" =~ $et ]]; then
+            vimrc="$(pwd)/$et/.vimrc"
+            if [ -f $vimrc ]; then
+                cp -v ~/.vimrc $vimrc
+            fi
+        fi
+    elif [ $et == "dot" ]; then 
         escape=$(ls -A "$(pwd)/$et"| egrep '^\.');
         for toi in $escape; do
             moi="$et/$toi";
@@ -19,7 +25,7 @@ for et in $(ls . | sort); do
                 cp -v ~/ $loin;
             fi
         done
-    fi
+    fi 
 done
 
     
