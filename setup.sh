@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# ============================================
-# Run all executables, and set up environment,
-# copy dot files to /home/$USER/<dot file>
-# ============================================
-
-DIRS=$(ls . | sort)
-
 for et in $(ls . | sort); do
     if [ $et == "git" ]; then
         continue
