@@ -5,6 +5,11 @@
 # development servers.
 # +~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 
 if [ "$#" -ne 1 ]; then
     echo "[!] usage ~> add-user.sh <username>"
