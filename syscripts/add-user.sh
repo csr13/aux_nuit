@@ -1,5 +1,9 @@
 #!/bin/bash
 # status ~> untested
+# +~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+
+# A script to help us onboard devs to
+# development servers.
+# +~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+
 
 
 if [ "$#" -ne 1 ]; then
@@ -10,10 +14,15 @@ fi
 user=$1
 user_dir=/home/$user
 
-groupadd $user && useradd -s /bin/bash -d $user_dir
-mkdir -p /home/$user && chown $user:$user -R $user_dir
 
-# The only manual step
+(
+    groupadd $user && \
+    useradd -s /bin/bash -d $user_dir $user && \
+    mkdir -p $user_dir && \
+    chown $user:$user -R $user_dir
+)
+
+
 passwd $user
 
 
