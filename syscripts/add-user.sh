@@ -8,6 +8,7 @@
 
 if [ "$#" -ne 1 ]; then
     echo "[!] usage ~> add-user.sh <username>"
+    exit 1
 fi
 
 
@@ -23,6 +24,6 @@ user_dir=/home/$user
 )
 
 
+echo "[!] set new password for $user -- make it funky"
 passwd $user
-
 
