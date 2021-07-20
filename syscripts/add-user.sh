@@ -31,9 +31,9 @@ to_sudo=$2
 
 
 if [ $to_sudo = "sisudo" ]; then
-    usermod -G sudo,$user,users,www-data $user
+    usermod -G sudo,"$user",users,www-data $user
 else
-    usermod -G $user,users,www-data $user
+    usermod -G "$user",users,www-data $user
 fi
 
 echo "[!] set new password for $user -- make it funky"
