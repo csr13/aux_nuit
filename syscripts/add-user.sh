@@ -23,8 +23,8 @@ to_sudo=$2
 
 
 (
-    groupadd --force $user && \
-    useradd -s /bin/bash -d $user_dir -g $user,users $user && \
+    groupadd $user && \
+    useradd -s /bin/bash -d $user_dir -g "$user",users $user && \
     mkdir -p $user_dir && \
     chown $user:$user -R $user_dir
 )
