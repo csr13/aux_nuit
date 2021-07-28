@@ -11,6 +11,7 @@ apt-get -y install libpython3.9-dev
 
 git clone https://github.com/vim/vim.git /tmp/vim 
 
+cd /tmp/vim
 make
 make test
 make install
