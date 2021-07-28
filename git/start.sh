@@ -1,7 +1,6 @@
 #!/bin/bash
-# =======================
 # Some personal shortcuts
-# =======================
+
 
 if [ "$#" -ne 2 ]; then
     echo "[!] usage ~> start.sh <git-username> <git-email>"
