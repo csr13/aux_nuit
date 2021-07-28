@@ -13,7 +13,7 @@ for et in $(ls . | sort); do
         if [[ "vim" =~ $et ]]; then
             vimrc="$(pwd)/$et/.vimrc"
             if [ -f $vimrc ]; then
-                cp -v ~/.vimrc $vimrc
+                cp -v $vimrc ~/
             fi
         fi
     elif [ $et == "dot" ]; then 
@@ -22,7 +22,7 @@ for et in $(ls . | sort); do
             moi="$et/$toi";
             loin="$(pwd)/$moi";
             if [ -f $loin ]; then
-                cp -v ~/ $loin;
+                cp -v $loin ~/;
             fi
         done
     fi 
