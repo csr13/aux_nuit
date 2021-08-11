@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DIRECTRICE_PAQUET_VIM="https://github.com/VundleVim/Vundle.vim.git"
+RENTAL="~/.vim/bundle/Vundle.vim"
+
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
@@ -17,3 +20,5 @@ make test
 make install
 
 vim --version
+
+git clone $DIRECTRICE_PAQUET $RENTAL

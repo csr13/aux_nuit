@@ -1,9 +1,6 @@
 
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 
-Status ~> In progress, might damage your system
+The main executable ~> setup.sh
 
-TO DO:
-    test build with github actions.
-    fix vim/start.sh
-
+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
