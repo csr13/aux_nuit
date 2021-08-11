@@ -20,8 +20,6 @@ for et in $(ls . | sort); do
                 # ça existe
                 # copier le fichier de configuration
                 cp -v $vimrc ~/
-                # installer le gestionnaire de plugins
-                $(vim -c "PluginInstall | q")
             fi
         fi
     # choses cachées ..
