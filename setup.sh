@@ -1,51 +1,30 @@
 #!/bin/bash
-# ~+~+~+~+~+~+~+~+~+~+~+~+~+
 
-for et in $(ls . | sort); do
-    if [ $et == "git" ] || [ $et != "syscripts" ]; then
-        continue
+
+function execute() {
+    local loca="$(pwd)/$1/start.sh";
+    if [ -x $loca ]; then
+        echo "{+} Executing $loca";
+        chmod +x $loca && /bin/bash $loca;
+    else
+        echo "{+} $loca not found ...";
     fi
-    # ~+~+~+~+~+~+~+
-    # être certain
-    # ~+~+~+~+~+~+~+
-    exe="$et/start.sh"
-    if [ -f $exe ]; then
-        if [[ ! "dot" =~ $et ]]; then 
-            # ~+~+~+~+~+~+~+~+~+
-            # rendre exécutable
-            # ~+~+~+~+~+~+~+~+~+       
-            chmod +x $exe;
-            /bin/bash "$(pwd)/$exe"
+    exit 1;
+}
+
+
+case $1 in 
+    "vim") execute "vim" ;;
+    "docker") execute "docker" ;;
+    "node") execute "node" ;;
+    "python") execute "python" ;;
+    "osquery") execute "osquery" ;;
+    "git") execute "git" ;;
+    "tmux") 
+        if [ -x dot/.tmux.conf ]; 
+            then cp dot/.tmux.conf ~/.tmux.conf; 
         fi
-        if [[ "vim" =~ $et ]]; then   
-            # ~+~+~+~+~+~+~+~
-            # existe-t-il ??
-            # ~+~+~+~+~+~+~+~   
-            vimrc="$(pwd)/$et/.vimrc"
-            if [ -f $vimrc ]; then
-                # ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
-                # ça existe
-                # copier le fichier de configuration
-                # ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
-                cp -v $vimrc ~/
-            fi
-        fi
-    # ~+~+~+~+~+~+~+~+~+~+~+~+~+
-    # choses cachées ..
-    # ~+~+~+~+~+~+~+~+~+~+~+~+~+
-    elif [ $et == "dot" ]; then
-        # ~+~+~+~+~+
-        # explicite
-        # ~+~+~+~+~+
-        escape=$(ls -A "$(pwd)/$et"| egrep '^\.');
-        for toi in $escape; do
-            moi="$et/$toi";
-            loin="$(pwd)/$moi";
-            if [ -f $loin ]; then
-                cp -v $loin ~/;
-            fi # je ne sais pa
-        done
-    fi # je ne sais plus
-done
-# je suis perdu
+    ;;
+    *) echo "{+} ...."; exit 1 ;;
+esac
 

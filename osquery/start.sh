@@ -28,3 +28,6 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys $OSQUERY_KEY
 add-apt-repository 'deb [arch=amd64] https://pkg.osquery.io/deb deb main'
 apt-get -y update
 apt-get -y install osquery
+
+# Install python osquery bindings.
+python3.8 -m pip install osquery
