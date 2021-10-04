@@ -1,6 +1,25 @@
 #!/bin/bash
 
 
+function usage () {
+    local t=(
+        "vim"
+        "docker"
+        "python"
+        "node"
+        "git"
+        "tmux"
+    )
+    echo "--------------------------------"
+    echo "Usage ~> ./setup.sh <tool_name>"
+    echo "--------------------------------"
+    echo "Tools"
+    echo "--------------------------------"
+    for s in ${!t[@]}; do
+        printf "%s) %s\n" "$s" "${t[$s]}";
+    done
+}
+
 function execute() {
     local loca="$(pwd)/$1/start.sh";
     if [ -x $loca ]; then
@@ -12,6 +31,10 @@ function execute() {
     exit 1;
 }
 
+if [ $# -lt 1 ]; then
+    usage;
+    exit 1
+fi
 
 case $1 in 
     "vim") execute "vim" ;;
