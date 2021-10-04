@@ -28,12 +28,12 @@ function execute() {
     else
         echo "{+} $loca not found ...";
     fi
-    exit 1;
+    exit 0;
 }
 
 if [ $# -lt 1 ]; then
     usage;
-    exit 1
+    exit 0
 fi
 
 case $1 in 
@@ -48,6 +48,6 @@ case $1 in
             then cp dot/.tmux.conf ~/.tmux.conf; 
         fi
     ;;
-    *) echo "{+} ...."; exit 1 ;;
+    *) echo "{+} ...."; exit 0 ;;
 esac
 
