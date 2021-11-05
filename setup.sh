@@ -44,7 +44,7 @@ case $1 in
     "osquery") execute "osquery" ;;
     "git") execute "git" ;;
     "tmux") 
-        if [ -x dot/.tmux.conf ]; 
+        if [ -f dot/.tmux.conf ]; 
             then cp dot/.tmux.conf ~/.tmux.conf; 
         fi
     ;;
