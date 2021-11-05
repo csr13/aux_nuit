@@ -5,5 +5,13 @@
       apt:
         update_cache: true
   tasks:
-    - name: Install basics
-      shell: ./setup.sh vim && ./setup.sh tmux && ./setup.sh python && ./setup.sh node
+    - name: Setup tmux
+      apt: name=tmux
+      shell: ./setup.sh tmux
+      tags:
+        - tmux
+    - name: Install vim from source
+      shell: ./setup.sh vim
+      tags:
+        - vim
+

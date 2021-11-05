@@ -20,9 +20,9 @@ vim --version
 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-chmod +x vim/post-vim.sh && vim/post-vim.sh
+chmod +x post-vim.sh && post-vim.sh
 
-cp vim/.vimrc ~/.vimrc
+cp .vimrc ~/.vimrc
 
 echo "[!] run vim -c 'PluginInstall'"
 
