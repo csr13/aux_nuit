@@ -1,6 +1,13 @@
 
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 
-The main executable ~> setup.sh
+* Build Dockerfile image
+    docker build --tag=dev:dev .
+
+* Run
+    docker run --rm -it dev:dev bash
+
+    ** Inside container
+        ansible-playbook setup.yml
 
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
