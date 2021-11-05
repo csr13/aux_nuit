@@ -1,5 +1,4 @@
 FROM ubuntu:focal
-ARG TAGS
 WORKDIR /home/root/tools
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
@@ -8,4 +7,3 @@ RUN apt update && \
     apt update && \
     apt install -y curl wget git ansible build-essential
 COPY . .
-CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]
