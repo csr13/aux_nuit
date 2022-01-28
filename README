@@ -1,13 +1,3 @@
+This repository is a bunch of tools that I must have when I enter and start working on a server.
 
-~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
-
-* Build Dockerfile image
-    docker build --tag=dev:dev .
-
-* Run
-    docker run --rm -it dev:dev bash
-
-    ** Inside container
-        ansible-playbook setup.yml
-
-~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
+Current status is in progress . . . 
