@@ -1,0 +1,16 @@
+[Unit]
+Description=Arachni service
+After=network.target
+
+
+[Service]
+User=localadmin
+Group=localadmin
+ExecStart=/home/localadmin/src/scripts/arachni/start.sh
+RemainAfterExit=No
+Restart=on-failure
+RestartSec=5s
+
+
+[Install]
+WantedBy=multi-user.target
