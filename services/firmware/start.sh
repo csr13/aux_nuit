@@ -1,8 +1,11 @@
 #!/bin/bash
 # ----------------------------------------------------------------
 # After this command runs, just do the following after the reboot.
-# ~/firmware-analyzer/src/install.py
-# ~/firmware-analyzer/start_all_installed_fact_components
+#
+# 1) ~/firmware-analyzer/src/install.py
+#
+# 2) ~/firmware-analyzer/start_all_installed_fact_components
+#
 # ----------------------------------------------------------------
 
 
