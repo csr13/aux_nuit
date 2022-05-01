@@ -7,4 +7,5 @@
 * Dfirtrack is an incident response tracker.
 
 ### TO DO:
-- [ ] Modify the main setup.sh to add the options to pick services as well.
+- [x] Modify the main manager.sh to add the options to pick services.
+- [ ] Modify the main manager.sh to build services after picking the service to build.
