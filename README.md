@@ -32,3 +32,7 @@ Inside container run this to install tmux and vim, to ease the pain.
 ```shell
 $~: ansible-playbook setup.yml
 ```
+
+#### To Do
+
+- [ ] Update setup.sh
