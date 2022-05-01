@@ -6,7 +6,7 @@ After=network.target
 [Service]
 User=localadmin
 Group=localadmin
-ExecStart=/home/localadmin/src/scripts/arachni/start.sh
+ExecStart=/home/localadmin/src/scripts/arachni/build.sh
 RemainAfterExit=No
 Restart=on-failure
 RestartSec=5s
