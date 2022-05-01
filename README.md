@@ -35,4 +35,4 @@ $~: ansible-playbook setup.yml
 
 #### To Do
 
-- [ ] Update setup.sh
+- [ ] Update setup.sh - status - needs work.

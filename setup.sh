@@ -9,25 +9,38 @@ function usage () {
         "node"
         "git"
         "tmux"
+        "services (interactive)"
     )
-    echo "--------------------------------"
-    echo "Usage ~> ./setup.sh <tool_name>"
-    echo "--------------------------------"
-    echo "Tools"
-    echo "--------------------------------"
+    
+    echo "====================================="
+    echo "Usage - ./setup.sh <tool_name>"
+    echo "====================================="
+    echo "Options"
+    echo "====================================="
+    
     for s in ${!t[@]}; do
-        printf "%s) %s\n" "$s" "${t[$s]}";
+        printf "%s) %s\n" "$(($s + 1))" "${t[$s]}";
     done
 }
 
 function execute() {
-    local loca="$(pwd)/$1/start.sh";
+    if [ $1 = services ]; then 
+        local loca="$(pwd)/$1/manager.sh";
+    else
+        local loca="$(pwd)/$1/start.sh";
+    fi;
+
     if [ -x $loca ]; then
         echo "{+} Executing $loca";
-        chmod +x $loca && /bin/bash $loca;
+        if [ $1 = services ]; then
+            cd ./services && /bin/bash manager.sh;
+        else
+            chmod +x $loca && /bin/bash $loca;
+        fi;
     else
         echo "{+} $loca not found ...";
     fi
+    
     exit 0;
 }
 
@@ -43,11 +56,12 @@ case $1 in
     "python") execute "python" ;;
     "osquery") execute "osquery" ;;
     "git") execute "git" ;;
+    "services") execute "services" ;;
     "tmux") 
         if [ -f dot/.tmux.conf ]; 
             then cp dot/.tmux.conf ~/.tmux.conf; 
         fi
     ;;
-    *) echo "{+} ...."; exit 0 ;;
+    *) echo "{+} ...."; usage; exit 0 ;;
 esac
 
