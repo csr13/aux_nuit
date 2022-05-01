@@ -1,3 +1,3 @@
 ## TO DO:
-- [ ] Change the start script to write the systemd file dynamically.
+- [x] Change the start script to write the systemd file dynamically.
 
