@@ -17,12 +17,16 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1']
 EOF
 
-source ~/src/venv/bin/activate
-pip install wheel django psycopg2-binary
-cd ~/src && pip install -r requirements.txt && \
-    python manage.py makemigrations --settings=dfirtrack.local_settings.py && \
-    python manage.py migrate --settings=dfirtrack.local_settings.py && \
-    python manage.py createcachetable --settings=dfirtrack.local_settings.py && \
-    python manage.py createsuperuser --settings=dfirtrack.local_settings.py
+source ~/src/venv/bin/activate && \
+    pip install wheel \
+    django \
+    psycopg2-binary \
+    git+https://github.com/dfirtrack/dfirtrack-api-python-client.git && \
+    cd ~/src && pip install -r requirements.txt && \
+        python manage.py makemigrations --settings=dfirtrack.local_settings.py && \
+        python manage.py migrate --settings=dfirtrack.local_settings.py && \
+        python manage.py createcachetable --settings=dfirtrack.local_settings.py && \
+        python manage.py createsuperuser --settings=dfirtrack.local_settings.py
 
-echo "[SERVICE MANAGER] run: python manage.py runserver to start
+echo "[SERVICE MANAGER] activate the environment found at $HOME/src/venv first."
+echo "[SERVICE MANAGER] run: python manage.py runserver --settings=dfritrack/local_settings.py to start";
