@@ -31,6 +31,7 @@ function build_service() {
 services_available=$(ls -d */ | cut -f 1 -d "/");
 services_enabled=(
     "arachni",
+    "intelowl",
 )
 
 cat << EOF
