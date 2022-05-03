@@ -1,25 +1,34 @@
 #!/bin/bash
+# Import env variables, meow >.<
 
 source ./build.env
 
+if [ ! $(which docker) ]; then
+    echo "[SERVICE MANAGER] docker must be installed"
+    exit 1
+fi;
+
+if [ ! $(which python3) ]; then
+    echo "[SERVICE MANAGER] python3 required";
+    exit 1
+fi;
+
 git clone https://github.com/intelowlproject/IntelOwl $DEST_PATH;
 
-cd intelowl/
-cd configuration/nginx/
+cd $DEST_PATH/docker && \
+    python3 -c "meow=open('default.yml','r');kat=meow.read().replace('- \"443:443\"','');meow.close();meow=open('default.yml','w').write(kat)" && \
+    python3 -c "meow=open('default.yml','r');kat=meow.read().replace('80:80','127.0.0.1:8000:8000');meow.close();meow=open('default.yml','w').write(kat)"
 
-sed -i 's/listen 80/listen 8000' http.conf
+cd $DEST_PATH/docker && \
+        cp env_file_app_template env_file_app && \
+        cp env_file_postgres_template env_file_postgres && \
+        cp env_file_integrations_template env_file_integrations
 
-cd $DEST_PATH
-cat configuration/nginx/http.conf
-#cd docker/
-
-#cp env_file_app_template env_file_app
-#cp env_file_postgres_template env_file_postgres
-#cp env_file_integrations_template env_file_integrations
-
-#cd ..
-
-#./initialize.sh
-#python3 start.py prod up
-
-#docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
+cd $DEST_PATH && \
+    /bin/bash ./initialize.sh && \
+    if [ $LOCAL = yes ]; then 
+        python3.8 start.py prod up; 
+    else 
+        python3 start.py prod up 
+    fi && \
+    docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
