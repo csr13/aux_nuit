@@ -13,7 +13,9 @@ function usage () {
     )
     
     echo "====================================="
-    echo "Usage - ./setup.sh <tool_name>"
+    echo "Toolkit"
+    echo "$(date)"
+    echo "Usage ~> ./setup.sh <tool_name>"
     echo "====================================="
     echo "Options"
     echo "====================================="

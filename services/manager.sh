@@ -12,9 +12,12 @@ function build_service() {
         echo "[SERVICE MANAGER] Building $1";
         local service_path="$(pwd)/$1";
         local build_script="$(pwd)/$1/build.sh";
-        # TO DO:
-        # execute the build script, but first finish dynamically allocating paths on
-        # service files and build scripts.
+        for $kat in $services_enabled; do
+            if [ $kat = $1 ]; then
+                chmod +x $build_script;
+                /bin/bash $build_script;
+            fi;
+        done;
     else
         echo "[SERVICE MANAGER] Unable to find service";
         exit 1
@@ -22,9 +25,13 @@ function build_service() {
 }
 
 # ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
-# Exec part
+# Exec
+# ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 
 services_available=$(ls -d */ | cut -f 1 -d "/");
+services_enabled=(
+    "arachni",
+)
 
 cat << EOF
 =================================

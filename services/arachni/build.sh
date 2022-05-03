@@ -35,7 +35,7 @@ After=network.target
 [Service]
 User=$USER
 Group=$USER
-ExecStart=$HOME/src/services/arachni/start.sh
+ExecStart=$HOME/aux_nuit/services/arachni/start.sh
 RemainAfterExit=No
 Restart=on-failure
 RestartSec=5s

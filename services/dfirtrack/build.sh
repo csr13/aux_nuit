@@ -6,10 +6,10 @@ apt-get install -y python3.8 \
     python3-dev \
     libpq-dev
 
-git clone https://github.com/stuhli/dfirtrack.git ~/src
-python3.8 -m venv ~/src/venv
+git clone https://github.com/stuhli/dfirtrack.git ~/dfirtrack && \
+    python3.8 -m venv ~/dfirtrack/venv
 
-cat << EOF > $HOME/src/dfirtrack/local_settings.py
+cat << EOF > $HOME/dfirtrack/local_settings.py
 from dfirtrack.settings import *
 
 DEBUG = True
@@ -28,5 +28,25 @@ source ~/src/venv/bin/activate && \
         python manage.py createcachetable --settings=dfirtrack.local_settings.py && \
         python manage.py createsuperuser --settings=dfirtrack.local_settings.py
 
-echo "[SERVICE MANAGER] activate the environment found at $HOME/src/venv first."
+echo "[SERVICE MANAGER] activate the environment found at $HOME/dfirtrack/venv first.";
 echo "[SERVICE MANAGER] run: python manage.py runserver --settings=dfritrack/local_settings.py to start";
+
+cat << EOF > /etc/systemd/system/dfirtrack.service
+[Unit]
+Description=Katz meow meow incident response
+After=network.target
+
+[Service]
+User=$USER
+Group=$USER
+ExecStart=$HOME/dfirtrack/venv/bin/python manage.py runserver --settings=dfirtrack.local_settings
+RemainAfterExit=No
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload && \
+    systemctl start dfirtrack.service && \
+    systemctl status dfirtrack.service
