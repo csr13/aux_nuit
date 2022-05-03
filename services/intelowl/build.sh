@@ -17,7 +17,7 @@ git clone https://github.com/intelowlproject/IntelOwl $DEST_PATH;
 
 cd $DEST_PATH/docker && \
     python3 -c "meow=open('default.yml','r');kat=meow.read().replace('- \"443:443\"','');meow.close();meow=open('default.yml','w').write(kat)" && \
-    python3 -c "meow=open('default.yml','r');kat=meow.read().replace('80:80','127.0.0.1:8000:8000');meow.close();meow=open('default.yml','w').write(kat)"
+    python3 -c "meow=open('default.yml','r');kat=meow.read().replace('80:80','127.0.0.1:6969:6969');meow.close();meow=open('default.yml','w').write(kat)"
 
 cd $DEST_PATH/docker && \
         cp env_file_app_template env_file_app && \
