@@ -27,8 +27,9 @@ cd $DEST_PATH/docker && \
 cd $DEST_PATH && \
     /bin/bash ./initialize.sh && \
     if [ $LOCAL = yes ]; then 
-        python3.8 start.py prod up; 
+        python3.8 start.py prod up -d; 
     else 
-        python3 start.py prod up 
-    fi && \
-    docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
+        python3 start.py prod up -d;
+    fi;
+
+docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
