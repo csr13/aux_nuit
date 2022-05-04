@@ -32,4 +32,5 @@ cd $DEST_PATH && \
         python3 start.py prod up -d;
     fi;
 
+docker exec -ti intelowl_uwsgi python3 manage.py migrate
 docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
