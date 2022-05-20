@@ -13,7 +13,7 @@ function usage () {
     )
     
     echo "====================================="
-    echo "Toolkit"
+    echo "[AUX NUIT]"
     echo "$(date)"
     echo "Usage ~> ./setup.sh <tool_name>"
     echo "====================================="
@@ -21,7 +21,7 @@ function usage () {
     echo "====================================="
     
     for s in ${!t[@]}; do
-        printf "%s) %s\n" "$(($s + 1))" "${t[$s]}";
+        printf ">>> %s\n" "${t[$s]}";
     done
 }
 
