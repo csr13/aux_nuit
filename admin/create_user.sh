@@ -4,7 +4,6 @@ function loggit() {
     echo "[INFO] $(date) $1";
 }
 
-
 function generate_keys() {
     # TO DO
     cd "$1" && \
