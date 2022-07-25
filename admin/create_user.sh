@@ -5,7 +5,6 @@ function loggit() {
 }
 
 function generate_keys() {
-    # TO DO
     cd "$1" && \
         loggit "making $1/.ssh folder" && \
         mkdir .ssh && \
