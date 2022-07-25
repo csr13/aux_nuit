@@ -1,15 +1,20 @@
 #!/bin/bash
 
+if [ $# -lt 1 ]; then
+    usage;
+    exit 0
+fi
 
 function usage () {
     local t=(
+        "admin"
         "vim"
         "docker"
         "python"
         "node"
         "git"
         "tmux"
-        "services (interactive)"
+        "osquery"
     )
     
     echo "====================================="
@@ -25,6 +30,7 @@ function usage () {
     done
 }
 
+
 function execute() {
     if [ $1 = services ]; then 
         local loca="$(pwd)/$1/manager.sh";
@@ -34,11 +40,7 @@ function execute() {
 
     if [ -x $loca ]; then
         echo "{+} Executing $loca";
-        if [ $1 = services ]; then
-            cd ./services && /bin/bash manager.sh;
-        else
-            chmod +x $loca && /bin/bash $loca;
-        fi;
+        chmod +x $loca && /bin/bash $loca;
     else
         echo "{+} $loca not found ...";
     fi
@@ -46,24 +48,23 @@ function execute() {
     exit 0;
 }
 
-if [ $# -lt 1 ]; then
-    usage;
-    exit 0
-fi
 
-case $1 in 
-    "vim") execute "vim" ;;
-    "docker") execute "docker" ;;
-    "node") execute "node" ;;
-    "python") execute "python" ;;
-    "osquery") execute "osquery" ;;
-    "git") execute "git" ;;
-    "services") execute "services" ;;
-    "tmux") 
-        if [ -f dot/.tmux.conf ]; 
-            then cp dot/.tmux.conf ~/.tmux.conf; 
-        fi
-    ;;
-    *) echo "{+} ...."; usage; exit 0 ;;
-esac
+function main() {
+    case $1 in 
+        "vim") execute "vim" ;;
+        "docker") execute "docker" ;;
+        "node") execute "node" ;;
+        "python") execute "python" ;;
+        "osquery") execute "osquery" ;;
+        "git") execute "git" ;;
+        "services") execute "services" ;;
+        "tmux") 
+            if [ -f dot/.tmux.conf ]; 
+                then cp dot/.tmux.conf ~/.tmux.conf; 
+            fi
+        ;;
+        *) echo "{+} ...."; usage; exit 0 ;;
+    esac
+}
 
+main $1
