@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
 function loggit() {
     echo "[INFO] $(date) $1";
 }
+
 
 function generate_keys() {
     # TO DO
@@ -18,7 +18,8 @@ function generate_keys() {
         chmod 600 "$1"/.ssh/* && \
         loggit "changing ownership of files to $2"
         chown -R "$2":"$2" "$1"/.ssh
-
+        loggit "copying .pub to authorized keys"
+        cp id_rsa.pub authorized_keys
     loggit "Copying $2 keys to root home.";
     if [ -d ~/ssh_keys ]; then
         cp -r "$1"/.ssh ~/ssh_keys/"$2";
