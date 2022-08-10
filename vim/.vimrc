@@ -14,7 +14,6 @@ if has('mouse')
     set mouse=a
 endif 
 
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 
 set nocompatible    " Set compatibility to Vim only
 set textwidth=85    " lines longer than 79 columns will be broken
@@ -27,6 +26,9 @@ set autoindent      " align the new line indent with the previous line
 set splitright      " split sp: to the right
 set backspace=indent,eol,start
 set completeopt-=preview
+
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html set textwidth=256
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
