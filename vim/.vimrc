@@ -1,9 +1,3 @@
-" ____   ____.___   _____  _________  ________    _______  ___________
-" \   \ /   /|   | /     \ \_   ___ \ \_____  \   \      \ \_   _____/
-"  \   Y   / |   |/  \ /  \/    \  \/  /   |   \  /   |   \ |    __)  
-"   \     /  |   /    Y    \     \____/    |    \/    |    \|     \   
-"    \___/   |___\____|__  /\______  /\_______  /\____|__  /\___  /   
-"                        \/        \/         \/         \/     \/    
 
 
 if &t_Co > 1
@@ -14,6 +8,15 @@ if has('mouse')
     set mouse=a
 endif 
 
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
 
 set nocompatible    " Set compatibility to Vim only
 set textwidth=85    " lines longer than 79 columns will be broken
@@ -38,35 +41,6 @@ nnoremap <C-H> <C-W><C-H>
 if filereadable(expand("~/.vimrc.plug"))
     source ~/.vimrc.plug
 endif
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-
-Plugin 'gmarik/Vundle.vim'      " required by Vundle
-Plugin 'Valloric/YouCompleteMe' " Auto Complete plugin for Python.
-Plugin 'preservim/nerdtree'     " File browsing tree
-Plugin 'itchyny/lightline.vim'  " statusline
-Plugin 'prettier/vim-prettier'
-Plugin 'jaredgorski/spacecamp'  " Colorscheme
-
-
-call vundle#end()         " required
-
-colorscheme spacecamp
-
-let g:lightline = {
-    \   'colorscheme': 'wombat',
-    \   'active' : {
-    \       'left' : [
-    \           [ 'mode', 'paste' ],
-    \           [ 'readonly', 'filename', 'modified', 'xxx' ]
-    \       ]
-    \   },
-    \   'component' : {
-    \       'xxx' : "How you doing sexy?!"
-    \   },
-    \}
 
 filetype plugin indent on " required
 
