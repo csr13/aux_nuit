@@ -1,5 +1,3 @@
-
-
 if &t_Co > 1
     syntax enable
 endif
@@ -7,16 +5,6 @@ endif
 if has('mouse')
     set mouse=a
 endif 
-
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
 
 set nocompatible    " Set compatibility to Vim only
 set textwidth=85    " lines longer than 79 columns will be broken
@@ -30,6 +18,17 @@ set splitright      " split sp: to the right
 set backspace=indent,eol,start
 set completeopt-=preview
 
+if filereadable(expand("~/.vimrc.plug"))
+    source ~/.vimrc.plug
+endif
+
+call plug#begin()
+Plug 'junegunn/vim-easy-align'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-fireplace'
+Plug 'Valloric/YouCompleteMe'
+call plug#end()
+
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType html set textwidth=256
 
@@ -38,10 +37,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-if filereadable(expand("~/.vimrc.plug"))
-    source ~/.vimrc.plug
-endif
+filetype plugin indent on
 
-filetype plugin indent on " required
-
-set laststatus=2    " required
+set laststatus=2
