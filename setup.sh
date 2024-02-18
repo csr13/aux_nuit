@@ -46,9 +46,17 @@ function delete_service () {
     ########## Main exception/s ##############
     if [ $1 = "tmux" ]; then
         rm ~/.tmux.conf
-        printf "Remove tmux from system: yes/no"; 
+        printf "Remove tmux from system: yes/no: "; 
         read choice;
-        echo "$choice";
+        if [[ "$choice" =~ "yes|no" ]]; then
+            echo "Invalid option, not removing --remove manually instead.";
+            exit 1;
+        fi;
+        if [ $choice = yes ]; then
+            apt remove tmux;
+        else
+            echo "Not removing tmux."
+        fi;
         exit 1;
     fi;
     ########## Run uninstall.sh ##############
