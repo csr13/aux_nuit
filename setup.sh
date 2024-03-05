@@ -9,10 +9,9 @@ t=(
     "docker"
     "python"
     "node"
-    "git"
     "tmux"
-    "osquery"
     "setoolkit"
+    "aircrack"
 )
 
 

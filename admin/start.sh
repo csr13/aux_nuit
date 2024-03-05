@@ -16,7 +16,3 @@ else
     echo "valid options are create-user and delete-user";
     exit 1;
 fi;
-
-
-
-
