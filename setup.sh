@@ -10,8 +10,6 @@ t=(
     "python"
     "node"
     "tmux"
-    "setoolkit"
-    "aircrack"
 )
 
 
