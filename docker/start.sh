@@ -1,40 +1,68 @@
 #!/bin/bash
 
+# ===============================================================
+# Universal Docker + Compose installation script (2025 edition)
+# Try official get.docker.com first, works on 99% of distros
+# If it fails, fall back to manual Ubuntu/Debian method
+# ===============================================================
 
-sudo apt-get -y remove docker \
-    docker-engine \
-    docker.io \
-    containerd runc \
-    && \
-    sudo apt-get update -y \
-    && \
-    sudo apt-get install \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        gnupg \
-        lsb-release
+set -euo pipefail
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+log() {
+    echo "[$(date '+%H:%M:%S')] $*"
+}
 
-if [ $1 = jammy ]; then
-    echo \
-        "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-        jammy stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-else
-    echo \
-        "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-fi;
+log "=== Universal Docker + Compose installer ==="
 
-
-
-sudo apt-get -y update 
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-if [ ! $(which docker-compose) ]; then
-     sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# Must be root
+if [[ $EUID -ne 0 ]]; then
+    echo "Run as root (or with sudo)"
+    exit 1
 fi
+
+log "Trying official get.docker.com script..."
+if curl -fsSL https://get.docker.com | sh -s -- --quiet; then
+    log "Official script succeeded! Docker installed."
+else
+    log "Official script failed or not supported. Falling back to manual Ubuntu/Debian method..."
+    
+    log "Removing any conflicting packages..."
+    apt-get remove -y docker docker-engine docker.io containerd runc || true
+
+    log "Installing prerequisites..."
+    apt-get update
+    apt-get install -y ca-certificates curl gnupg lsb-release
+
+    log "Adding Docker GPG key..."
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+        | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    chmod a+r /etc/apt/keyrings/docker.gpg
+
+    log "Adding Docker repository..."
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+      https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+      | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    log "Installing latest Docker Engine + Compose plugin..."
+    apt-get update
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+fi
+
+log "Enabling and starting Docker..."
+systemctl enable --now docker
+
+if [[ -n "${SUDO_USER:-}" ]]; then
+    usermod -aG docker "$SUDO_USER"
+    log "User $SUDO_USER added to docker group (re-login required)"
+fi
+
+log "Verifying installation..."
+docker version --format 'Docker: {{.Server.Version}}'
+docker compose version
+
+log "Docker + Compose installed successfully!"
+echo
+echo "Test it: docker run --rm hello-world"
+echo "Use Compose: docker compose up   (no hyphen!)"
