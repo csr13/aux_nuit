@@ -5,8 +5,15 @@
 # Saves private key to /root/ssh_keys/<username>/ for admin retrieval
 # =============================================================================
 
+set -euo pipefail
+
 loggit() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] $*" 
+}
+
+validate_username() {
+    local candidate="$1"
+    [[ "$candidate" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]
 }
 
 if [[ $EUID -ne 0 ]]; then
@@ -14,10 +21,15 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-read -p "Enter username: " username
+read -r -p "Enter username: " username
 
 if [[ -z "$username" ]]; then
     loggit "Username cannot be empty"
+    exit 1
+fi
+
+if ! validate_username "$username"; then
+    loggit "Invalid username format. Use lowercase letters, numbers, '_' or '-'."
     exit 1
 fi
 
@@ -35,15 +47,19 @@ else
 fi
 
 loggit "Creating user $username with home directory"
-useradd -m -s /bin/bash -g "$group" "$username"
+useradd -m -s /bin/bash -g "$group" -- "$username"
 
 loggit "User $username created successfully"
 
-read -p "Generate SSH key pair for $username? (yes/no): " answer
+read -r -p "Generate SSH key pair for $username? (yes/no): " answer
 answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
 
 if [[ "$answer" == "yes" || "$answer" == "y" ]]; then
-    homedir="/home/$username"
+    homedir="$(getent passwd "$username" | cut -d: -f6)"
+    if [[ -z "${homedir:-}" || ! -d "$homedir" ]]; then
+        loggit "Unable to resolve a valid home directory for $username"
+        exit 1
+    fi
     
     loggit "Generating SSH key pair for $username"
     
@@ -67,7 +83,7 @@ if [[ "$answer" == "yes" || "$answer" == "y" ]]; then
 
     # Backup private key for admin retrieval
     backup_dir="/root/ssh_keys/$username"
-    mkdir -p "$backup_dir"
+    install -d -m 700 -o root -g root "$backup_dir"
     cp "$homedir/.ssh/id_rsa" "$backup_dir/"
     cp "$homedir/.ssh/id_rsa.pub" "$backup_dir/"
     chmod 600 "$backup_dir/id_rsa"

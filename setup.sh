@@ -3,6 +3,7 @@
 
 set -e
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 t=(
     "admin"
     "vim"
@@ -12,8 +13,7 @@ t=(
     "tmux"
 )
 
-
-function usage () {
+function usage() {
     echo "====================================="
     echo "[AUX NUIT]"
     echo "$(date)"
@@ -21,63 +21,56 @@ function usage () {
     echo "====================================="
     echo "Options"
     echo "====================================="
-    for s in ${!t[@]}; do
-        printf ">>> %s\n" "${t[$s]}";
+    for s in "${t[@]}"; do
+        printf ">>> %s\n" "$s"
     done
 }
 
+function is_supported_tool() {
+    local candidate="$1"
+    local s
+    for s in "${t[@]}"; do
+        if [ "$candidate" = "$s" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
 
 function execute() {
-    local loca="$(pwd)/$1/start.sh";
-    if [ -f $loca ]; then
-        echo "{+} Executing $loca";
-        chmod +x $loca && /bin/bash $loca;
-    else
-        echo "{+} $loca not found ...";
+    local loca="$SCRIPT_DIR/$1/start.sh"
+    if [ -f "$loca" ]; then
+        echo "{+} Executing $loca"
+        chmod +x "$loca"
+        /bin/bash "$loca"
+        return 0
     fi
-    exit 0;
+
+    echo "{+} $loca not found ..."
+    return 1
 }
-
-
-function delete_service () {
-    ########## Main exception/s ##############
-    if [ $1 = "tmux" ]; then
-        rm ~/.tmux.conf
-        printf "Remove tmux from system: yes/no: "; 
-        read choice;
-        if [[ "$choice" =~ "yes|no" ]]; then
-            echo "Invalid option, not removing --remove manually instead.";
-            exit 1;
-        fi;
-        if [ $choice = yes ]; then
-            apt remove tmux;
-        else
-            echo "Not removing tmux."
-        fi;
-        exit 1;
-    fi;
-    ########## Run uninstall.sh ##############
-    local loca="$(pwd)/$1/uninstall.sh";
-    if [ -f $loca ]; then
-        echo "{+} Executing $loca"; chmod +x $loca && /bin/bash $loca;
-    else
-        echo "{+} $loca not found ...";
-    fi; 
-    exit 0;
-}
-
 
 function main() {
-    case $1 in 
+    case "$1" in
         "vim") execute "vim" ;;
-        "docker")  execute "docker" ;;
+        "docker") execute "docker" ;;
         "node") execute "node" ;;
         "python") execute "python" ;;
         "git") execute "git" ;;
         "setoolkit") execute "setoolkit" ;;
-        "tmux") if [ -f dot/.tmux.conf ]; then cp dot/.tmux.conf ~/.tmux.conf; fi ;;
-        "--delete") delete_service $2 ;;
-        *) echo "{+} ...."; usage; exit 0 ;;
+        "tmux")
+            if [ -f "$SCRIPT_DIR/dot/.tmux.conf" ]; then
+                cp "$SCRIPT_DIR/dot/.tmux.conf" "$HOME/.tmux.conf"
+                return 0
+            fi
+            echo "{+} $SCRIPT_DIR/dot/.tmux.conf not found ..."
+            return 1
+            ;;
+        *)
+            echo "{+} ...."
+            usage
+            return 1
+            ;;
     esac
 }
 
@@ -85,39 +78,15 @@ function main() {
 # Execution
 #############
 
-
 if [ $# -lt 1 ]; then
-    usage;
+    usage
     exit 0
 fi
 
-if [ $1 = "--delete" ] && [ $# -eq 1 ]; then
-    echo "Missing service name. Usage: --delete <service-name>" exit 1;
-    exit 1;
-fi;
+if ! is_supported_tool "$1"; then
+    echo "Invalid option => $1"
+    exit 1
+fi
 
-
-if [ $# -eq 2 ]; then
-    for s in ${!t[@]}; do
-        i=s; 
-        s="${t[$s]}";
-        if [ $1 = "--delete" ]; then 
-            if [ $2 = $s ]; then
-                main $1 $2; 
-            fi;
-        else
-            echo "Invalid option $1"; exit 1;
-        fi;
-    done; 
-    echo "Invalid service to delete => $2"; exit 1;
-else
-    for s in ${!t[@]}; do
-        i=s; 
-        s="${t[$s]}";
-        if [ $1 = $s ]; then 
-            main $1; 
-            exit 1; 
-        fi;
-    done; 
-    echo "Invalid option => $1"; exit 1;
-fi;
+main "$1"
+exit $?
